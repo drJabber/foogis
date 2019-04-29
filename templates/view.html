@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block scripts %}
+<script>
+   var chatSocket = new WebSocket('ws://' + window.location.host +'/ws/model/');
+
+chatSocket.onopen=function(e){
+    chatSocket.send(JSON.stringify({'type':'start'}));
+}
+
+chatSocket.onmessage = function(e) {
+    var data = JSON.parse(e.data);
+    var msg_text='';
+
+    switch (data.type){
+        case 'png-data':{
+            $(function () {
+                var $img = $('#image-target');
+                var index=data.index;
+                msg_text='png #'+index.toString();
+                shape=data.shape;
+                $img.attr("height",shape[0]/2);
+                $img.attr("width",shape[1]/2);
+                $img.attr("opacity",0.1);
+                $img.attr("src", "data:image/png;base64," + data.data);
+                $('#message-span').text(msg_text);
+                console.log('message='+msg_text);
+
+            });
+            break;
+        }
+        default:{
+            msg_text=data.message.toString();
+            $('#message-span').text(msg_text);
+            break;
+        }
+    }
+
+};
+
+chatSocket.onclose = function(e) {
+    // $('#container').text('Chat socket closed unexpectedly');
+};
+
+
+</script>
+{% endblock scripts %}
+
+
+
+
+{% block content %}
+<div id="container">
+    <div class="inlines" id="btn-container">
+
+        <button title="Start" >Start</button>
+        <button title="Pause" >Pause</button>
+        <button title="Resume" >Resume</button>
+        <button title="Stop" >Stop</button>
+        <button title="Restart" >Restart</button>
+    </div>
+
+    <div class="inlines" id="msg-container">
+        <span id="message-span"></span>
+    </div>
+    <div class="inlines" id="png-container">
+        <img id="image-target"/>
+    </div>
+</div>
+
+
+{% endblock content %}

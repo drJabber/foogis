@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Remap</title>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <script src="{% static 'scripts/jquery-3.3.1.min.js' %}"></script>
+        <!-- 1. Подключим библиотеку jQuery (без нее jQuery UI не будет работать) -->
+        <!-- 2. Подключим jQuery UI -->
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+        {% block scripts %}
+        {% endblock scripts %}
+    </head>
+
+    <div class="header">
+        <table>
+                <tr>
+                    <th width="100%">REMAP</th>                    
+                </tr>
+        </table>
+    </div>
+
+    <body>
+        {% block content %}
+        {% endblock content %}
+    </body>
+
+</html>
+        
