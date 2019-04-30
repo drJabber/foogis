@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block scripts %}
+
+    
+    <!-- leaflet start -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+    <!-- leaflet end -->
+
+    <!-- map import -->
+    {% load static%}
+    <script type="text/javascript" src="{% static 'scripts/map/map.js' %}"></script>
+    <script type="text/javascript" src="{% static 'scripts/map/getPic.js' %}"></script>
+    <!-- map import -->
+
+{% endblock scripts %}
+
+
+
+
+{% block content %}
+
+    <div id="bodyDiv">
+
+        <div id="mapBox">
+            <div id="mapid"></div>
+            <div id="mapCtrl">
+                <button id="showLayer" class="mapCtrl">Show layer</button>
+                <button id="hideLayer" class="mapCtrl">Hide Layer</button>
+                <div id="ajaxPic">
+                    <img id="my404img" width=50% height=10%/>
+                </div>
+                <script>
+                    $(document).ready(function() {
+                        $('#showLayer').button();
+                        $('#showLayer').click(function() {
+                            if (stopPic==1) {
+                                stopPic = 0;
+                                getPic(mymap);    
+                            };                            
+                        });
+                        $('#hideLayer').button();
+                        $('#hideLayer').click(function() {
+                            stopPic = 1;
+                            setTimeout(function() {
+                                $('.leaflet-image-layer').hide();    
+                            }, 1000);
+                        });
+                    }); 
+                </script>
+            </div>
+        </div>
+        
+        <script>
+            var mymap;
+            window.onload = function(){
+                mymap = mapInit(); 
+            };
+            console.log('finish');
+            
+        </script>
+
+    </div>
+
+{% endblock content %}
