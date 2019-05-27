@@ -57,12 +57,14 @@ BODY {
 
 #app-container{
     width:100%;  
+    /* height:800px; */
     /* max-width:460px; */
   }
 
 #map-container{
   width:100%;
-  height:400px;
+  height:800px;
+  /* width : 800px; */
 } 
 
 #map-target {
@@ -76,7 +78,7 @@ BODY {
   .inlines
   {
     width:100%;
-    display:inline-block;
+    /* display:inline-block; */
   }
 
   #btn-container{

@@ -6,9 +6,9 @@ import json
 from time import sleep
 from asgiref.sync import sync_to_async
 import asyncio
-from PIL import Image 
-from io import BytesIO
-from base64 import b64encode
+# from PIL import Image 
+# from io import BytesIO
+# from base64 import b64encode
 import numpy as np
 
 class WSConsumer(AsyncWebsocketConsumer):
@@ -31,28 +31,18 @@ class WSConsumer(AsyncWebsocketConsumer):
         if (data['type']=='start'):
             # if self.started:
             #     self.started=True
-            await self.channel_layer.group_add("mii-png-group", self.channel_name)
+            await self.channel_layer.group_add("mii-group", self.channel_name)
             await self.channel_layer.send('mii-worker',{'type':'start'})
 
-    async def process_png_data(self, message):
+    async def process_points_data(self, message):
         print('received ',message['index'])
         index=message['index']
-        buffer=message['field_data']
-        dtype=message['field_dtype']
-        shape=message['field_shape']
-        cur_field=np.frombuffer(buffer,dtype).reshape(shape)
 
-        
-        buff=BytesIO()
-        im=Image.fromarray(np.asarray(cur_field)).convert('RGBA')
-        alfa=Image.new('L',im.size,64)
-        im.putalpha(alfa)
-        im.save(buff,'png')
+        print('points size ', len (message['colors']))
 
-        # skimage.io.imsave( str( pathlib.Path(f'./data/data{index:02d}').with_suffix( '.png' ) ), cur_field_cm)
         await self.send(text_data=json.dumps({
-            'type':'png-data',
+            'type':'points',
             'index':index,
-            'shape':shape,
-            'data':b64encode(buff.getvalue()).decode('utf-8'),
+            'points':message['points'],
+            'colors':message['colors'],
         }))
