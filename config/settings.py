@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import re
 import django_heroku
 import dj_database_url
 
@@ -79,6 +80,13 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             # "hosts": [("redis", 6379)],
             "hosts": [("localhost", 6379)],
+            "expiry": 2,
+            "channel_capacity": {
+                "http.request": 50,
+                "http.response!*": 10,
+                "specific.*" : 5,
+                re.compile(r"^websocket.send\!.+"): 5,
+            },        
         }
     },
 }

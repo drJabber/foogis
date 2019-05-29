@@ -31,6 +31,7 @@ class WSConsumer(AsyncWebsocketConsumer):
         if (data['type']=='start'):
             # if self.started:
             #     self.started=True
+            print(self.channel_name)
             await self.channel_layer.group_add("mii-group", self.channel_name)
             await self.channel_layer.send('mii-worker',{'type':'start'})
 

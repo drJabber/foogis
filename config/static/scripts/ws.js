@@ -1,3 +1,6 @@
+var gliphy_shape=null;
+
+
 function start_data_rendering(map_instance){
 
     var chanSocket = new WebSocket('ws://' + window.location.host +'/ws/model/');
@@ -14,10 +17,14 @@ function start_data_rendering(map_instance){
             case 'points':{
                 points=data.points;
                 colors=data.colors;
-                L.glify.points({
+                if (gliphy_shape!=null){
+                    gliphy_shape.remove();
+                }
+                gliphy_shape=L.glify.points({
                     map:map_instance,
                     data:points,
-                    size : 3,
+                    size : 2,
+                    opacity : 0.4,
                     color: function(index, point){
                         // col2=L.glify.color.random();
                         col=colors[index];
@@ -26,8 +33,7 @@ function start_data_rendering(map_instance){
                 })
             }
             default:{
-                msg_text=data.message.toString();
-                $('#message-span').text(msg_text);
+                console.log(data.type);
                 break;
             }
         }
