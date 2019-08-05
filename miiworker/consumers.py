@@ -46,9 +46,9 @@ class BackgroundTaskConsumer(AsyncConsumer):
                 c0=cur_field[i,j,0].item()
                 c1=cur_field[i,j,1].item()
                 c2=cur_field[i,j,2].item()
-                if (c0>0.0001) and (c1>0.0001) and (c2>0.0001):
+                if (c0>0.000001) and (c1>0.000001) and (c2>0.000001):
                     # pixel=f'#{c2:02x}{c1:02x}{c0:02x}'
-                    colors_list.append({'g':c2,'b':c1,'r':c0})
+                    colors_list.append({'r':1-c2,'b':1-c1,'g':1-c0})
 
                     point_list.append(list(self.projection.to_latlon(j,i)))
                 if (c0<0 or c1<0 or c2<0):

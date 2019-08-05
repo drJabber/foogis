@@ -23,12 +23,10 @@ function start_data_rendering(map_instance){
                 gliphy_shape=L.glify.points({
                     map:map_instance,
                     data:points,
-                    size : 2,
+                    size : 3,
                     opacity : 0.4,
                     color: function(index, point){
-                        // col2=L.glify.color.random();
-                        col=colors[index];
-                        return col;
+                        return colors[index];
                     }    
                 })
             }
