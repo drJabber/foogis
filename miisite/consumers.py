@@ -6,10 +6,17 @@ import json
 from time import sleep
 from asgiref.sync import sync_to_async
 import asyncio
+
+import os
+
 # from PIL import Image 
 # from io import BytesIO
 # from base64 import b64encode
 import numpy as np
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT_DIR = os.path.join(BASE_DIR, "data/out")
+
 
 class WSConsumer(AsyncWebsocketConsumer):
 
@@ -41,9 +48,15 @@ class WSConsumer(AsyncWebsocketConsumer):
 
         print('points size ', len (message['colors']))
 
-        await self.send(text_data=json.dumps({
+        json_text=json.dumps({
             'type':'points',
             'index':index,
             'points':message['points'],
             'colors':message['colors'],
-        }))
+        })
+
+        await self.send(text_data=json_text)
+
+        fp=open(os.path.join(OUT_DIR,f'output{index:03d}.json'),'w+')
+        fp.write(json_text)
+        fp.close()

@@ -7,12 +7,16 @@ function start_data_rendering(map_instance){
 
     chanSocket.onopen=function(e){
         chanSocket.send(JSON.stringify({'type':'start'}));
+        console.log("onopen");
+        
     }
     
     chanSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
         var msg_text='';
     
+        console.log("onmsg");
+        
         switch (data.type){
             case 'points':{
                 points=data.points;
