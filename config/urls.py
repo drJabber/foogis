@@ -16,5 +16,5 @@ Including another URLconf
 from django.conf.urls import url, include
 
 urlpatterns = [
-    url(r'^play', include('miisite.urls'))
+    url(r'^play', include('miisite.urls')),
 ]
