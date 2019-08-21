@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block scripts %}
+
+    
+    <!-- leaflet start -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin="" ></script>
+    <!-- leaflet end -->
+
+    <!-- map import -->
+    {% load static%}
+
+    <link rel="stylesheet" src="{% static 'scripts/leaflet-velocity.css' %}"></script>
+    <script type="text/javascript" src="{% static 'scripts/leaflet-velocity.js' %}"></script>
+
+    <!-- <script type="text/javascript" src="{% static 'scripts/map.js' %}"></script> -->
+    <!-- <script type="text/javascript" src="{% static 'scripts/glify.js' %}"></script> -->
+    <!-- <script type="text/javascript" src="{% static 'scripts/getPic.js' %}"></script> -->
+    <!-- map import -->
+
+    <!-- ws setup -->
+    <script type="text/javascript" src="{% static 'scripts/ws.js' %}"></script>
+    <script type="text/javascript" src="{% static 'scripts/map.js' %}"></script>
+    <!-- ws setup -->
+
+{% endblock scripts %}
+
+
+
+
+{% block content %}
+<div id="app-container">
+    <div class="inlines" id="btn-container">
+        <button title="Start" >Start</button>
+        <button title="Pause" >Pause</button>
+        <button title="Resume" >Resume</button>
+        <button title="Stop" >Stop</button>
+        <button title="Restart" >Restart</button>
+    </div>
+    <div class="inlines" id="msg-container">
+            <span id="message-span"></span>
+        </div>
+    
+    <div class="inlines" id="map-container">
+            <div id="map-target"></div>
+            <div id="image-container">
+                    <img id="image-target"/>
+            </div>
+    </div>
+
+    <script>
+            var mymap;
+            window.onload = function(){
+                mymap = mapInit2(); 
+            };
+            console.log('finish');
+            
+    </script>
+
+    
+</div>
+
+
+{% endblock content %}
