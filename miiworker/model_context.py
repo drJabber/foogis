@@ -6,14 +6,21 @@ import tqdm
 import itertools
 
 class ModelContext:
-    def __init__(self, emission_path, angle, ratio,steps):
+    # def __init__(self, emission_path, angle, ratio,steps,zoom_level):
+    def __init__(self, **kwargs):
         print( 'initializing...' )
         
+        self.context=dict()
+        self.context.update(kwargs)
         self.queue=[]
-        self.steps=steps
-        self.iter=itertools.count(1)
+        # self.steps=steps
+        self.iter=itertools.count(1);
 
-        self.emission = pickle.loads( pathlib.Path(emission_path).read_bytes() )
+        self.emission = pickle.loads( pathlib.Path(self.context['emission_path']).read_bytes() )
+        
+        # self.angle=angle
+        # self.ratio=ratio
+        # self.zoom_level=zoom_level
 
         device = torch.device( 'cuda' )
 
@@ -27,11 +34,16 @@ class ModelContext:
 
         print( 'building kernel...' )
 
-        self.kernel = self.wind_kernel( np.deg2rad( angle ), ratio )
+        self.kernel = self.wind_kernel( np.deg2rad( self.context['angle'] ), self.context['ratio'] )
         self.kernel = torch.tensor( self.kernel.reshape( 1, 1, 3, 3 ), dtype=torch.float32 ).to( device )
-        
-    def wind_kernel(self, direction, bone ):
 
+    def __getitem__(self, param):
+        return self.context[param] 
+
+    def __setitem__(self, param, value):
+        self.context[param]=value 
+
+    def wind_kernel(self, direction, bone ):
         t = np.abs( np.tan( direction ) )
         x = 1.0 / ( 1.0 + t )
         y = t / ( 1.0 + t )
@@ -63,7 +75,7 @@ class ModelContext:
 
     def run(self):
         # for epoch_n in tqdm.tqdm( range( self.steps ) ):
-        for epoch_n in range( self.steps +1) :
+        for epoch_n in range( self.context['steps'] +1) :
             self.field += self.emission
             torch.clamp( self.field, min=0, out=self.field )
             self.field = torch.nn.functional.conv2d( self.field, self.kernel, padding=1 )
