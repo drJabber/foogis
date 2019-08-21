@@ -9,6 +9,9 @@ from django.core.paginator import Paginator
 def hello(request):
     return render(request, 'view.html')
 
+def tofile(request):
+    return render(request, 'tofile.html')
+
 def start(request):
     return render(request, 'view.html')
 

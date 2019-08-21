@@ -41,6 +41,10 @@ class WSConsumer(AsyncWebsocketConsumer):
             print(self.channel_name)
             await self.channel_layer.group_add("mii-group", self.channel_name)
             await self.channel_layer.send('mii-worker',{'type':'start'})
+        if (data['type']=='tofile'):
+            print(self.channel_name)
+            await self.channel_layer.group_add("mii-group", self.channel_name)
+            await self.channel_layer.send('mii-worker',{'type':'tofile','zoom_level':data['zoom_level']})
 
     async def process_points_data(self, message):
         print('received ',message['index'])
@@ -60,3 +64,22 @@ class WSConsumer(AsyncWebsocketConsumer):
         fp=open(os.path.join(OUT_DIR,f'output{index:03d}.json'),'w+')
         fp.write(json_text)
         fp.close()
+
+    async def process_scalar_points_data(self, message):
+        print('scalar')
+        print('received ',message['index'])
+        index=message['index']
+
+        # print('points size ', len (message['colors']))
+
+        json_text=json.dumps({
+            'type':'points',
+            'index':index,
+            'points':message['points'],
+        })
+
+        await self.send(text_data=json_text)
+
+        fp=open(os.path.join(OUT_DIR,f'output{index:03d}.json'),'w+')
+        fp.write(json_text)
+        fp.close()        
